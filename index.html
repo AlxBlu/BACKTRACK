@@ -1990,7 +1990,6 @@ function calculateRecovery() {
     const pointsLostOnAssessment = validWeight * ((100 - score) / 100);
     const maxPointsInCompleted = Math.max(0, completedWeight - pointsLostOnAssessment);
     
-    // Cross-reference user's "Current Grade" vs the absolute math of their specific assessment score
     const assessmentPointsEarned = validWeight * (score / 100);
     let inputtedPoints = (current / 100) * completedWeight;
     
@@ -2410,7 +2409,7 @@ function archivePage() {
                 <span class="search-symbol">⌕</span>
                 <input id="archiveSearch" placeholder="Search courses or concepts..." oninput="filterArchive()">
             </div>
-            <button class="btn btn-primary" onclick="openAddCourse(true)">+ ADD COURSE</button>
+            <button class="btn btn-primary" onclick="openArchiveCourse()">+ ARCHIVE COURSE</button>
         </div>
         <div id="archiveResults" class="archive-grid">${archiveCards(archived)}</div>
     </div>
@@ -2492,19 +2491,40 @@ function problemPage() {
     `;
 }
 
-function openAddCourse(archive = false) {
+// -------------------------------------------------------------
+// ADD COURSE WITH TABS & PDF UPLOAD SIMULATION (DASHBOARD ONLY)
+// -------------------------------------------------------------
+function openAddCourse() {
     document.body.insertAdjacentHTML("beforeend", `
         <div class="modal-backdrop" id="modalBackdrop" onclick="backdropClose(event)">
             <div class="modal" role="dialog" aria-modal="true" aria-labelledby="addCourseTitle">
                 <div class="modal-header">
                     <div>
-                        <div class="eyebrow">${archive ? "ARCHIVE" : "YOUR COURSES"}</div>
+                        <div class="eyebrow">YOUR COURSES</div>
                         <h2 id="addCourseTitle">ADD A COURSE</h2>
                         <p>Give BACKTRACK the basics. You can change the rest later.</p>
                     </div>
                     <button class="close-button" onclick="closeModal()" aria-label="Close">×</button>
                 </div>
-                <form onsubmit="addCourse(event, ${archive})">
+
+                <!-- Mode Toggle -->
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button type="button" id="tabManual" class="btn btn-dark" onclick="switchAddMode('manual')">Add Manually</button>
+                    <button type="button" id="tabUpload" class="btn btn-outline" onclick="switchAddMode('upload')">Upload PDF</button>
+                </div>
+
+                <!-- PDF Upload Section -->
+                <div id="uploadSection" style="display: none; text-align: center; padding: 40px 20px; border: 2px dashed var(--line); border-radius: 13px; margin-bottom: 20px;">
+                    <div style="font-size: 24px; margin-bottom: 10px;">📄</div>
+                    <strong style="display: block; margin-bottom: 5px;">Upload Course Syllabus</strong>
+                    <p style="color: var(--muted); font-size: 11px; margin-bottom: 15px;">We'll automatically extract the course name, code, and assessment weights.</p>
+                    <input type="file" id="syllabusUpload" accept="application/pdf" style="display: none;" onchange="handlePDFUpload(event)">
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('syllabusUpload').click()">SELECT PDF</button>
+                    <div id="uploadStatus" style="margin-top: 15px; font-size: 11px; color: var(--orange); font-weight: bold;"></div>
+                </div>
+
+                <!-- Manual Form Section -->
+                <form id="manualForm" onsubmit="addCourse(event)">
                     <div class="form-grid">
                         <div class="form-group"><label class="form-label">Course code</label><input id="newCode" required placeholder="e.g. ECE 310"></div>
                         <div class="form-group"><label class="form-label">Course name</label><input id="newName" required placeholder="e.g. Signals & Systems"></div>
@@ -2525,7 +2545,64 @@ function openAddCourse(archive = false) {
     setTimeout(() => { document.getElementById("newCode")?.focus(); }, 50);
 }
 
-function addCourse(event, archive) {
+function switchAddMode(mode) {
+    const manualForm = document.getElementById('manualForm');
+    const uploadSection = document.getElementById('uploadSection');
+    const tabManual = document.getElementById('tabManual');
+    const tabUpload = document.getElementById('tabUpload');
+
+    if (mode === 'manual') {
+        manualForm.style.display = 'block';
+        uploadSection.style.display = 'none';
+        tabManual.className = 'btn btn-dark';
+        tabUpload.className = 'btn btn-outline';
+    } else {
+        manualForm.style.display = 'none';
+        uploadSection.style.display = 'block';
+        tabManual.className = 'btn btn-outline';
+        tabUpload.className = 'btn btn-dark';
+    }
+}
+
+async function handlePDFUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const statusObj = document.getElementById('uploadStatus');
+    statusObj.textContent = "Extracting text from PDF...";
+
+    // Simulating the API processing time
+    setTimeout(() => {
+        statusObj.textContent = "Autofilling form...";
+        
+        // Simulating the returned data from an AI API:
+        const extractedData = {
+            code: "CPE 450",
+            name: "Embedded Systems",
+            instructor: "Dr. Al-Fayed",
+            topics: "Microcontrollers, ARM architecture, Real-Time OS"
+        };
+
+        // Populate the manual form with the extracted data
+        document.getElementById('newCode').value = extractedData.code;
+        document.getElementById('newName').value = extractedData.name;
+        document.getElementById('newInstructor').value = extractedData.instructor;
+        document.getElementById('newTopics').value = extractedData.topics;
+
+        // Switch back to manual mode so the user can review and hit "Add"
+        setTimeout(() => {
+            switchAddMode('manual');
+            statusObj.textContent = "";
+            showToast("Syllabus processed. Please review the details.");
+            
+            // Clear the file input in case they want to upload again
+            document.getElementById('syllabusUpload').value = ""; 
+        }, 800);
+
+    }, 2000);
+}
+
+function addCourse(event) {
     event.preventDefault();
     const code = document.getElementById("newCode").value.trim();
     const name = document.getElementById("newName").value.trim();
@@ -2539,16 +2616,88 @@ function addCourse(event, archive) {
     const newCourse = {
         id: "course-" + Date.now(),
         code, name, instructor, grade, deadline,
-        deadlineDays: archive ? 999 : 7,
-        status: archive ? "archived" : "active",
+        deadlineDays: 7,
+        status: "active",
         semester, topics, missed: false, weeks: []
     };
 
     courses.push(newCourse);
     saveCourses();
     closeModal();
-    showToast(archive ? "Course added to Archive." : "Course added.");
+    showToast("Course added.");
     render();
+}
+
+// -------------------------------------------------------------
+// ARCHIVE ACTIVE COURSE FUNCTIONALITY
+// -------------------------------------------------------------
+function openArchiveCourse() {
+    const activeCourses = courses.filter(c => c.status === "active");
+    
+    let content = "";
+    if (activeCourses.length === 0) {
+        content = `
+            <div class="empty" style="margin-top: 20px;">
+                <div class="empty-icon">📂</div>
+                <h3>No active courses found</h3>
+                <p>You need to have active courses in your dashboard before you can archive them.</p>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-primary" onclick="closeModal()">CLOSE</button>
+            </div>
+        `;
+    } else {
+        content = `
+            <form onsubmit="archiveActiveCourse(event)">
+                <div class="form-group" style="margin-top: 20px;">
+                    <label class="form-label">Select a course to archive</label>
+                    <select id="courseToArchive" required>
+                        ${activeCourses.map(c => `<option value="${c.id}">${c.code} — ${c.name}</option>`).join("")}
+                    </select>
+                </div>
+                <p style="color:var(--muted); font-size:11px; margin-top:15px; line-height:1.5;">Archiving a course will remove it from your dashboard but keep its concepts and materials saved here for future reference.</p>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-light" onclick="closeModal()">CANCEL</button>
+                    <button type="submit" class="btn btn-primary">ARCHIVE COURSE</button>
+                </div>
+            </form>
+        `;
+    }
+
+    document.body.insertAdjacentHTML("beforeend", `
+        <div class="modal-backdrop" id="modalBackdrop" onclick="backdropClose(event)">
+            <div class="modal" role="dialog" aria-modal="true">
+                <div class="modal-header">
+                    <div>
+                        <div class="eyebrow">ARCHIVE</div>
+                        <h2>ARCHIVE A COURSE</h2>
+                    </div>
+                    <button class="close-button" onclick="closeModal()">×</button>
+                </div>
+                ${content}
+            </div>
+        </div>
+    `);
+}
+
+function archiveActiveCourse(event) {
+    event.preventDefault();
+    const select = document.getElementById("courseToArchive");
+    if (!select) return;
+    
+    const courseId = select.value;
+    const course = courses.find(c => c.id === courseId);
+    
+    if (course) {
+        course.status = "archived";
+        course.deadline = "Completed";
+        course.deadlineDays = 999;
+        
+        saveCourses();
+        closeModal();
+        showToast(course.code + " has been archived.");
+        render(); 
+    }
 }
 
 function closeModal() { document.getElementById("modalBackdrop")?.remove(); }
