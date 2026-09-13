@@ -13,7 +13,7 @@
     --bg: #f7f5ef;
     --surface: #fffefa;
     --surface-2: #f1eee7;
-    --ink: #152d2c;
+    --ink: #0d1e1d;
     --muted: #71807d;
     --line: #e7e3da;
     --dark: #102a29;
@@ -46,7 +46,7 @@
     --skyline-fill: rgba(0,0,0,0.06);
 }
 
-/* Polished Dark Mode (Not just an inversion) */
+/* Polished Dark Mode */
 [data-theme="dark"] {
     --bg: #0a0a0a;
     --surface: #121212;
@@ -74,7 +74,7 @@
 }
 
 /* =========================================================
-   CUSTOM DOM CURSOR (Hides default cursor completely)
+   CUSTOM DOM CURSOR
    ========================================================= */
 * { 
     box-sizing: border-box; 
@@ -107,9 +107,7 @@
     100% { transform: rotate(360deg); }
 }
 
-html { 
-    scroll-behavior: smooth; 
-}
+html { scroll-behavior: smooth; }
 
 body {
     margin: 0;
@@ -122,9 +120,7 @@ body {
     overflow-x: hidden;
 }
 
-button, input, select, textarea { 
-    font: inherit; 
-}
+button, input, select, textarea { font: inherit; }
 
 button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
     outline: 3px solid rgba(255, 122, 26, 0.35);
@@ -169,36 +165,27 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 
 .sweep-arrow {
     position: absolute;
-    top: 0; 
-    left: 0;
-    width: 250vw; 
-    height: 100vh;
-    background: linear-gradient(-90deg, var(--orange), var(--red));
+    top: 0; left: 0;
+    width: 250vw; height: 100vh;
+    background: linear-gradient(90deg, var(--orange), var(--red));
     clip-path: polygon(150px 0, 100% 0, calc(100% - 150px) 50%, 100% 100%, 150px 100%, 0 50%);
     will-change: transform;
-    transform: translateX(-250vw);
+    transform: translateX(100vw);
 }
 
-.sweep-arrow.delay {
-    background: var(--ink);
-}
+.sweep-arrow.delay { background: var(--ink); }
 
-.sweep-overlay.active .sweep-arrow {
-    animation: sweepAnimation 0.9s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-}
-
-.sweep-overlay.active .sweep-arrow.delay {
-    animation: sweepAnimation 0.9s cubic-bezier(0.77, 0, 0.175, 1) 0.1s forwards;
-}
+.sweep-overlay.active .sweep-arrow { animation: sweepAnimation 0.9s cubic-bezier(0.77, 0, 0.175, 1) forwards; }
+.sweep-overlay.active .sweep-arrow.delay { animation: sweepAnimation 0.9s cubic-bezier(0.77, 0, 0.175, 1) 0.1s forwards; }
 
 @keyframes sweepAnimation {
-    0% { transform: translateX(-250vw); }
+    0% { transform: translateX(100vw); }
     45%, 55% { transform: translateX(-75vw); }
-    100% { transform: translateX(100vw); }
+    100% { transform: translateX(-250vw); }
 }
 
 /* =========================================================
-   TOP NAV
+   TOP NAV & THEME SWITCH
    ========================================================= */
 .topbar {
     height: 80px;
@@ -260,38 +247,55 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.02em;
-    text-transform: none;
     transition: 0.15s ease;
 }
 
-.nav-link:hover,
-.nav-link.active {
+.nav-link:hover, .nav-link.active {
     color: var(--ink);
     background: transparent;
 }
 
-.top-actions {
+.top-actions { display: flex; align-items: center; gap: 12px; }
+
+.theme-switch {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    width: 58px;
+    height: 30px;
+    padding: 2px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    transition: 0.3s ease;
+}
+
+.theme-switch:hover { border-color: var(--orange); }
+
+.switch-handle {
+    background: var(--surface);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(0);
+}
+
+[data-theme="dark"] .switch-handle {
+    transform: translateX(28px);
+    background: var(--ink);
 }
 
 /* =========================================================
-   APP
+   APP & TYPOGRAPHY
    ========================================================= */
 main {
     max-width: 1500px;
     margin: 0 auto;
     padding: 50px 60px 100px;
-}
-
-.page {
-    animation: pageIn 0.25s ease;
-}
-
-@keyframes pageIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 .eyebrow {
@@ -315,251 +319,297 @@ h1 {
     z-index: 2;
 }
 
-h2 {
-    font-size: 28px;
-    letter-spacing: -0.035em;
-    font-weight: 850;
-}
-
-h3 {
-    font-size: 22px;
-    letter-spacing: -0.025em;
-}
-
-.subheading {
-    color: var(--muted);
-    max-width: 680px;
-    line-height: 1.65;
-    font-size: 20px;
-}
-
 /* =========================================================
    BUTTONS
    ========================================================= */
 .btn {
-    border: 0;
-    border-radius: 12px;
-    padding: 14px 24px;
-    font-size: 14px;
-    font-weight: 800;
-    letter-spacing: 0.02em;
-    text-transform: none;
-    transition: 0.18s ease;
+    border: 0; border-radius: 12px; padding: 14px 24px; font-size: 14px; font-weight: 800;
+    letter-spacing: 0.02em; transition: 0.18s ease;
 }
-
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.btn:active {
-    transform: translateY(0);
-}
-
-.btn-dark {
-    background: var(--dark);
-    color: var(--bg);
-}
-
-[data-theme="dark"] .btn-dark {
-    background: var(--ink);
-    color: var(--bg);
-}
-
-.btn-primary {
-    color: white;
-    background: linear-gradient(135deg, var(--orange), var(--red));
-    box-shadow: 0 8px 20px rgba(240, 50, 50, 0.18);
-}
-
-.btn-light {
-    background: var(--surface-2);
-    color: var(--ink);
-}
-
-.btn-outline {
-    background: transparent;
-    border: 2px solid var(--line);
-    color: var(--ink);
-    font-weight: 800;
-}
-
-#themeToggle {
-    font-size: 16px;
-    padding: 10px 14px;
-}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.btn:active { transform: translateY(0); }
+.btn-dark { background: var(--dark); color: var(--bg); }
+[data-theme="dark"] .btn-dark { background: var(--ink); color: var(--bg); }
+.btn-primary { color: white; background: linear-gradient(135deg, var(--orange), var(--red)); box-shadow: 0 8px 20px rgba(240, 50, 50, 0.18); }
+.btn-light { background: var(--surface-2); color: var(--ink); }
+.btn-outline { background: transparent; border: 2px solid var(--line); color: var(--ink); font-weight: 800; }
 
 /* =========================================================
-   LANDING PAGE
+   LANDING PAGE (ENHANCED REALISTIC PAPER TEXTURES)
    ========================================================= */
-.landing-page {
-    max-width: 1450px;
-    margin: 0 auto;
-}
+.landing-page { max-width: 1450px; margin: 0 auto; }
+.landing-hero, .landing-tools, .landing-bottom { position: relative; z-index: 2; }
 
 .landing-hero {
-    min-height: 520px;
+    min-height: 600px;
     display: grid;
-    grid-template-columns: 1fr 0.95fr;
+    grid-template-columns: 1.15fr 0.85fr; /* Keeps room for large left text */
     align-items: center;
-    padding: 55px 40px 45px;
+    padding: 50px 0 50px 70px;
     background: var(--surface);
     border-radius: 0 0 20px 20px;
+    position: relative;
+    overflow: visible;
+}
+
+/* Left-side Decorative Squiggles (Scaled UP) */
+.hero-decorations {
+    position: absolute; left: -10px; top: 20px; bottom: 20px; width: 140px;
+    z-index: 5; pointer-events: none;
+}
+.hero-decorations svg { width: 100%; height: 100%; overflow: visible; }
+[data-theme="dark"] .hero-decorations path.squiggly { stroke: var(--line); }
+
+/* Base Drop Shadow Container */
+.grid-paper-shadow {
+    position: absolute;
+    top: -15px; bottom: -15px; left: 70px; width: 62%;
+    filter: drop-shadow(8px 12px 25px rgba(0,0,0,0.15));
+    z-index: 1;
+}
+[data-theme="dark"] .grid-paper-shadow { filter: drop-shadow(8px 12px 25px rgba(0,0,0,0.6)); }
+
+/* 1. White frayed fiber edge beneath the orange paper (Slanted Rip) */
+.grid-paper-fray {
+    position: absolute;
+    inset: -5px -25px -5px -5px; /* Pulls it out slightly to the right */
+    z-index: 1;
+}
+.grid-paper-fray::before {
+    content: "";
+    position: absolute; inset: 0;
+    /* Translucent edge simulating thin ripped paper */
+    background: rgba(253, 253, 248, 0.95); 
+    /* Slanted & chaotic clip path / */
+    clip-path: polygon( 0 0, 100% 0%, 96% 6%, 99% 12%, 91% 22%, 95% 28%, 86% 40%, 89% 48%, 79% 60%, 83% 68%, 73% 82%, 76% 88%, 66% 100%, 0 100% );
+    /* Apply SVG filter to turn polygons into realistic torn fibers */
+    filter: url(#paper-edge-rough);
+}
+
+/* 2. Inner Grid Paper Base (Filtered, fibrous edge, no grid lines here) */
+.grid-paper-base {
+    position: absolute; inset: 0; z-index: 2;
+    background-color: #d87c44; /* Authentic burnt orange */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    background-blend-mode: multiply;
+    /* Pulled in slightly so the white fray is visible */
+    clip-path: polygon( 0 0, 98% 0%, 94% 6%, 97% 12%, 89% 22%, 93% 28%, 84% 40%, 87% 48%, 77% 60%, 81% 68%, 71% 82%, 74% 88%, 64% 100%, 0 100% );
+    /* Displace this base layer for the fibrous look */
+    filter: url(#paper-edge-rough);
+    box-shadow: inset -5px 0 35px rgba(0,0,0,0.15); /* Simulate paper depth */
+}
+
+/* 3. The Grid Lines (Crisp! Placed ON TOP of the base, heavily clipped, but NO FILTER applied to prevent blurring) */
+.grid-paper-lines {
+    position: absolute; inset: 0; z-index: 3;
+    background-image: 
+        linear-gradient(rgba(50, 20, 10, 0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(50, 20, 10, 0.4) 1px, transparent 1px);
+    background-size: 42px 42px;
+    /* Exactly matching the base clip path, but avoiding the filter */
+    clip-path: polygon( 0 0, 98% 0%, 94% 6%, 97% 12%, 89% 22%, 93% 28%, 84% 40%, 87% 48%, 77% 60%, 81% 68%, 71% 82%, 74% 88%, 64% 100%, 0 100% );
+}
+
+[data-theme="dark"] .grid-paper-base {
+    background-color: #3a2217;
+    background-blend-mode: overlay;
+}
+[data-theme="dark"] .grid-paper-lines {
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.8) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.8) 1px, transparent 1px);
 }
 
 .landing-copy {
-    padding-left: 15px;
+    padding: 0;
     position: relative;
-    z-index: 2;
+    z-index: 4;
 }
 
+/* 4. Top White Paper Drop Shadow Wrapper */
+.white-paper-shadow {
+    position: relative;
+    filter: drop-shadow(4px 15px 30px rgba(0,0,0,0.3)); 
+    margin-left: 20px; margin-top: 20px; margin-bottom: 20px;
+    max-width: 600px;
+}
+[data-theme="dark"] .white-paper-shadow { filter: drop-shadow(4px 12px 20px rgba(0,0,0,0.8)); }
+
+/* 5. The physical white torn paper block (Slanted Rip) */
+.white-paper-inner {
+    position: relative; 
+    padding: 50px 60px 50px 40px;
+    z-index: 5;
+}
+.white-paper-inner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #fdfcf8;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    background-blend-mode: multiply;
+    box-shadow: inset -10px 0 35px rgba(0,0,0,0.06); /* Shadow curling near the tear */
+    
+    /* Slanted & chaotic paths / for right edge. Mildly wavy on other borders. */
+    clip-path: polygon(
+        0% 2%, 15% 0%, 30% 3%, 45% 0%, 60% 2%, 75% 0%, 90% 2%, 100% 0%,
+        97% 7%, 91% 15%, 95% 23%, 89% 31%, 93% 39%, 87% 47%, 91% 55%, 84% 63%, 88% 71%, 81% 79%, 85% 87%, 77% 95%, 80% 100%,
+        60% 98%, 45% 100%, 30% 98%, 15% 100%, 0% 98%
+    );
+    filter: url(#paper-edge);
+    z-index: -1;
+}
+[data-theme="dark"] .white-paper-inner::before { background-color: #1a1a1a; background-blend-mode: overlay; }
+
+/* Text formatting matching the image closely */
 .landing-copy h1 {
-    font-size: clamp(48px, 6vw, 76px);
-    max-width: 650px;
-    margin-bottom: 24px;
+    font-size: clamp(40px, 5.5vw, 72px);
+    margin-bottom: 18px;
+    color: #0c201e; 
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    font-weight: 900;
+}
+[data-theme="dark"] .landing-copy h1 { color: #f0f0f0; }
+
+.landing-copy h1 span.mark {
+    display: inline-block;
+    color: var(--orange);
+    font-size: 0.55em;
+    vertical-align: top;
+    margin-right: 4px;
+    transform: translateY(10px);
 }
 
-.landing-copy h1 em {
-    display: block;
-    position: relative;
-    z-index: 10;
-    margin-bottom: -40px; 
-    padding-bottom: 40px; 
-    padding-left: 12px; 
-    margin-left: -12px; 
-    font-family: Georgia, "Times New Roman", serif;
+.em-word {
+    font-family: Georgia, 'Times New Roman', serif;
     font-style: italic !important;
-    font-size: 0.85em;
-    font-weight: 500;
-    letter-spacing: -0.05em;
-    background: linear-gradient(90deg, var(--orange), var(--violet), var(--cyan)) !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.02em;
+    font-size: 1.1em;
+    
+    /* FIX FOR THE CUTOFF 'f'. Generous padding creates bounding box room, negative margin fixes layout offset */
+    padding: 0.1em 0.4em; 
+    margin: -0.1em -0.4em;
+    
+    background: linear-gradient(90deg, var(--orange), var(--red)) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
     color: transparent !important;
-    text-shadow: none !important;
+    display: inline-block;
+    overflow: visible; /* Backup to ensure no cropping */
 }
 
 .landing-copy p {
-    max-width: 460px;
-    color: var(--muted);
-    font-size: 16px;
+    color: #222;
+    font-size: 14.5px;
     line-height: 1.6;
-    margin-bottom: 28px;
-    position: relative;
-    z-index: 1; 
+    max-width: 440px;
+    margin-bottom: 30px;
+    font-weight: 500;
 }
+[data-theme="dark"] .landing-copy p { color: #aaa; }
 
+/* Right Graphics area */
 .landing-visual {
-    position: relative;
-    min-height: 400px;
-    display: grid;
-    place-items: center;
-    overflow: hidden;
+    position: relative; 
+    min-height: 500px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    overflow: visible; 
+    z-index: 10;
 }
 
-.hero-arrows {
-    position: relative;
-    width: 450px; 
-    height: auto;
-    z-index: 2;
-    transform: translateX(-10px);
-    filter: drop-shadow(0 14px 20px rgba(240,50,50,.17));
-}
-
-.abstract-shape {
+/* Grid overlay outside the paper */
+.visual-dots {
     position: absolute;
-    opacity: 0.55;
+    top: -40px; right: -80px; width: 450px; height: 450px;
+    background-image: radial-gradient(var(--ink) 2px, transparent 2px);
+    background-size: 24px 24px;
+    opacity: 0.08;
+    z-index: -2;
+    border-radius: 50%;
+}
+[data-theme="dark"] .visual-dots { background-image: radial-gradient(var(--line) 2px, transparent 2px); opacity: 0.15; }
+
+/* Ghost triangles mimicking the image background elements */
+.ghost-triangle {
+    position: absolute;
+    width: 0; height: 0;
+    border-top: 150px solid transparent;
+    border-bottom: 150px solid transparent;
+    border-left: 200px solid rgba(0,0,0,0.04);
+    z-index: -1;
+}
+[data-theme="dark"] .ghost-triangle { border-left-color: rgba(255,255,255,0.04); }
+
+.triangle-1 { right: -60px; top: 50px; transform: scale(1.5) rotate(-15deg); }
+.triangle-2 { right: 80px; bottom: 20px; transform: scale(1.2) rotate(10deg); border-left-color: rgba(240,50,50,0.05); }
+
+/* Soft orange/red blurred floating circle */
+.shape-circle {
+    position: absolute;
+    width: 180px; height: 180px; border-radius: 50%;
+    right: 140px; top: -20px;
+    background: linear-gradient(135deg, rgba(255, 122, 26, 0.15), rgba(240, 50, 50, 0.15));
+    z-index: -1;
+    opacity: 0.8;
+    filter: blur(25px);
+}
+[data-theme="dark"] .shape-circle { background: linear-gradient(135deg, rgba(255, 122, 26, 0.1), rgba(240, 50, 50, 0.1)); }
+
+/* Enormous right-side arrows */
+.hero-arrows {
+    position: relative; 
+    width: 650px; 
+    height: auto; 
+    z-index: 2; 
+    transform: translateX(40px);
+    filter: drop-shadow(0 20px 30px rgba(240,50,50,.25));
 }
 
-.shape-one {
-    width: 220px;
-    height: 220px;
-    right: -50px;
-    top: 40px;
-    background: var(--line);
-    clip-path: polygon(100% 0, 100% 100%, 0 50%);
+/* Extra right-side graphic accents */
+.floating-accent { position: absolute; }
+.accent-box {
+    width: 90px; height: 90px;
+    border: 5px solid var(--orange);
+    border-radius: 16px;
+    right: 10px; top: 40px;
+    transform: rotate(20deg);
+    opacity: 0.7;
+    z-index: 3;
 }
+.accent-cross {
+    width: 40px; height: 40px;
+    right: 120px; bottom: 40px;
+    opacity: 0.8;
+    z-index: 3;
+}
+.accent-cross::before, .accent-cross::after {
+    content: ''; position: absolute; background: var(--red); border-radius: 2px;
+}
+.accent-cross::before { top: 18px; left: 0; width: 40px; height: 4px; }
+.accent-cross::after { left: 18px; top: 0; width: 4px; height: 40px; transform: rotate(45deg); }
 
-.shape-two {
-    width: 280px;
-    height: 190px;
-    right: 40px;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 112, 48, .22), rgba(240, 50, 50, .08));
-    clip-path: polygon(100% 0, 30% 100%, 0 65%);
-}
-
-.landing-tools {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    background: var(--surface);
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-}
-
-.landing-tools > div {
-    padding: 22px 28px;
-    display: grid;
-    grid-template-columns: 32px 1fr;
-    column-gap: 12px;
-    transition: .18s ease;
-}
-
-.landing-tools > div:hover {
-    background: var(--bg);
-}
-
-.tool-icon {
-    grid-row: span 2;
-    color: var(--red);
-    font-size: 22px;
-}
-
-.landing-tools strong {
-    font-size: 13px;
-    letter-spacing: .08em;
-}
-
-.landing-tools span {
-    color: var(--muted);
-    font-size: 12px;
-}
+/* Base landing tools formatting */
+.landing-tools { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.landing-tools > div { padding: 22px 28px; display: grid; grid-template-columns: 32px 1fr; column-gap: 12px; transition: .18s ease; }
+.landing-tools > div:hover { background: var(--bg); }
+.tool-icon { grid-row: span 2; color: var(--red); font-size: 22px; }
+.landing-tools strong { font-size: 13px; letter-spacing: .08em; }
+.landing-tools span { color: var(--muted); font-size: 12px; }
 
 .landing-bottom {
-    min-height: 140px;
-    background: var(--dark);
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 34px 46px;
+    min-height: 140px; background: var(--dark); color: white; display: flex; justify-content: space-between; align-items: center; padding: 34px 46px;
 }
-
-[data-theme="dark"] .landing-bottom {
-    background: #000000;
-}
-
-.landing-bottom h2 {
-    font-size: 22px;
-    line-height: 1.1;
-    margin-bottom: 10px;
-}
-
-.landing-bottom p {
-    max-width: 480px;
-    color: rgba(255,255,255,.6);
-    font-size: 13px;
-    line-height: 1.6;
-    margin: 0;
-}
-
-.landing-bottom-label {
-    color: rgba(255,255,255,.52);
-    font-size: 13px;
-    line-height: 1.6;
-    letter-spacing: .16em;
-}
+[data-theme="dark"] .landing-bottom { background: #000000; }
+.landing-bottom h2 { font-size: 22px; line-height: 1.1; margin-bottom: 10px; }
+.landing-bottom p { max-width: 480px; color: rgba(255,255,255,.6); font-size: 13px; line-height: 1.6; margin: 0; }
+.landing-bottom-label { color: rgba(255,255,255,.52); font-size: 13px; line-height: 1.6; letter-spacing: .16em; }
 
 /* =========================================================
    PANELS & COMPONENTS
@@ -1101,26 +1151,43 @@ h3 {
     opacity: 0.6;
 }
 
+/* Enhanced Skyline CSS */
 .skyline-layer {
     transition: opacity 0.5s ease;
 }
 .skyline-tower {
     fill: #6d9da5;
-    opacity: 0.16;
+    opacity: 0.25; /* Made towers more prominent */
     transition: opacity 0.3s ease;
 }
 
 .skyline-tower:nth-child(3n) {
-    opacity: 0.11;
+    opacity: 0.18;
 }
 
 .skyline-tower:nth-child(4n) {
-    opacity: 0.20;
+    opacity: 0.35;
 }
 
 [data-theme="dark"] .skyline-tower {
     fill: #ffffff;
-    opacity: 0.04;
+    opacity: 0.08;
+}
+[data-theme="dark"] .skyline-tower:nth-child(3n) {
+    opacity: 0.05;
+}
+[data-theme="dark"] .skyline-tower:nth-child(4n) {
+    opacity: 0.12;
+}
+
+/* Cloud CSS */
+.scenery-cloud {
+    fill: #ffffff;
+    transition: fill 0.3s ease, opacity 0.3s ease;
+}
+
+[data-theme="dark"] .scenery-cloud {
+    fill: #a0aec0;
 }
 
 .winding-track-svg {
@@ -1128,13 +1195,6 @@ h3 {
     inset: 0;
     pointer-events: none;
     z-index: 50; /* Track layer */
-}
-
-#treeContainer {
-    position: absolute;
-    inset: 0;
-    z-index: 20;
-    pointer-events: none;
 }
 
 #stationsContainer {
@@ -1240,19 +1300,6 @@ h3 {
     border-color: var(--orange);
 }
 
-.scenery-cluster {
-    position: absolute;
-    transform: translate(-50%, -100%);
-    transition: transform 0.25s ease;
-    pointer-events: none;
-    will-change: transform;
-}
-
-.scenery-cluster svg {
-    overflow: visible;
-    filter: drop-shadow(0 5px 4px rgba(20, 40, 35, 0.10));
-}
-
 /* =========================================================
    SLEEK BULLET TRAIN CSS
    ========================================================= */
@@ -1267,7 +1314,7 @@ h3 {
     offset-anchor: 50% 100%; 
     offset-rotate: auto; 
     transition: offset-distance 2.5s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 100;
+    z-index: 300; /* Increased to render correctly above stations */
     display: none; 
 }
 
@@ -1614,7 +1661,7 @@ input::placeholder { color: #9ba3b1; }
 }
 [data-theme="dark"] .time-option:hover { background: #2a313a; }
 [data-theme="dark"] .time-option.selected { 
-    background: linear-gradient(135deg, rgba(255, 122, 26, 0.15), rgba(118, 103, 245, 0.08)); 
+    background: linear-gradient(135deg, rgba(255, 122, 26, 0.15), rgba(240, 50, 50, 0.08)); 
     border-color: var(--orange); 
     box-shadow: inset 0 0 0 1px var(--orange); 
 }
@@ -1673,14 +1720,14 @@ input::placeholder { color: #9ba3b1; }
 .archive-card:hover { 
     transform: translateY(-5px); 
     box-shadow: var(--shadow); 
-    border-color: var(--violet); 
+    border-color: var(--orange); 
 }
 
 .archive-card .archive-icon { 
     width: 55px; 
     height: 55px; 
     border-radius: 14px; 
-    background: linear-gradient(135deg, var(--orange-soft), var(--blue-soft)); 
+    background: linear-gradient(135deg, var(--orange-soft), rgba(240, 50, 50, 0.1)); 
     display: grid; 
     place-items: center; 
     font-weight: 900; 
@@ -1778,12 +1825,19 @@ input::placeholder { color: #9ba3b1; }
 @media (max-width: 1050px) { 
     .archive-grid { grid-template-columns: repeat(2, 1fr); } 
     .tool-hero, .recovery-layout { grid-template-columns: 1fr; } 
+    .landing-hero { grid-template-columns: 1fr; padding-left: 50px; }
+    .hero-decorations { left: 5px; }
+    .grid-paper-shadow { width: 90%; left: 40px; }
 }
 
 @media (max-width: 760px) {
     .timer-settings { grid-template-columns: 1fr; }
     .topbar { padding: 15px 24px; }
-    .landing-hero { grid-template-columns: 1fr; padding: 50px 30px; text-align: left; }
+    .landing-hero { padding: 50px 20px; text-align: left; min-height: auto; overflow: hidden; }
+    .hero-decorations { display: none; } 
+    .grid-paper-shadow { width: calc(100% - 20px); left: 10px; top: -5px; bottom: -5px; }
+    .white-paper-shadow { margin-left: 0; }
+    .white-paper-inner { padding: 30px 25px; }
     .landing-visual { min-height: 280px; }
     .landing-tools { grid-template-columns: repeat(2, 1fr); }
     .landing-bottom { flex-direction: column; align-items: flex-start; gap: 24px; }
@@ -1824,42 +1878,31 @@ input::placeholder { color: #9ba3b1; }
     </svg>
 </div>
 
-<!-- PROPER SVG DEFINITIONS FOR TRAIN MAP -->
+<!-- PROPER SVG DEFINITIONS FOR TRAIN MAP & TORN PAPER -->
 <svg style="display:none;" aria-hidden="true">
     <defs>
+        <!-- TORN PAPER DISPLACEMENT FILTERS -->
+        <!-- Standard Edge: Soft fibrous tear -->
+        <filter id="paper-edge" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04 0.08" numOctaves="4" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        
+        <!-- Rough Edge: Deep fibrous tear for underlying layers -->
+        <filter id="paper-edge-rough" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.03 0.06" numOctaves="5" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+
         <!-- Mask for the Proper Train Tracks -->
         <mask id="trackMask">
             <rect width="100%" height="100%" fill="white" />
             <path id="trackMaskPath" d="" fill="none" stroke="black" stroke-width="12" stroke-linecap="round" />
         </mask>
         
-        <!-- Pine Tree Shape -->
-        <g id="tree-pine">
-            <rect x="-4" y="-10" width="8" height="20" fill="#6F4E37"/>
-            <path d="M-20,-5 L0,-35 L20,-5 Z" fill="#2E4A35"/>
-            <path d="M-15,-20 L0,-45 L15,-20 Z" fill="#3D5A40"/>
-        </g>
-        
-        <!-- Autumn Tree Shape -->
-        <g id="tree-autumn">
-            <rect x="-4" y="-10" width="8" height="20" fill="#5C4033"/>
-            <ellipse cx="-8" cy="-25" rx="18" ry="25" fill="#f03232" opacity="0.9"/>
-            <ellipse cx="8" cy="-35" rx="20" ry="28" fill="#ff7a1a" opacity="0.9"/>
-            <ellipse cx="0" cy="-45" rx="15" ry="20" fill="#eab308" opacity="0.8"/>
-        </g>
-
-        <!-- Shrub Shape -->
-        <g id="shrub">
-            <ellipse cx="0" cy="-10" rx="16" ry="12" fill="#3D5A40"/>
-            <ellipse cx="-8" cy="-6" rx="12" ry="9" fill="#2E4A35"/>
-            <ellipse cx="10" cy="-7" rx="10" ry="8" fill="#4a6b4d"/>
-        </g>
-
-        <!-- Autumn Shrub Shape -->
-        <g id="shrub-autumn">
-            <ellipse cx="0" cy="-10" rx="16" ry="12" fill="#f03232" opacity="0.9"/>
-            <ellipse cx="-8" cy="-6" rx="12" ry="9" fill="#ff7a1a" opacity="0.9"/>
-            <ellipse cx="10" cy="-7" rx="10" ry="8" fill="#eab308" opacity="0.8"/>
+        <!-- Cloud Shape -->
+        <g id="cloud-shape">
+            <path d="M 25 60 a 20 20 0 0 1 15 -15 a 25 25 0 0 1 45 0 a 20 20 0 0 1 15 15 a 20 20 0 0 1 -20 20 h -35 a 20 20 0 0 1 -20 -20 z"/>
         </g>
     </defs>
 </svg>
@@ -1891,7 +1934,12 @@ input::placeholder { color: #9ba3b1; }
         <button class="nav-link" data-route="problem" onclick="go('problem')">PROBLEM</button>
     </nav>
     <div class="top-actions">
-        <button class="btn btn-outline" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle Theme" style="border-radius:50%; padding:10px 14px;">🌙</button>
+        <!-- Pill-Shaped Theme Toggle -->
+        <button class="theme-switch" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+            <div class="switch-handle">☀️</div>
+        </button>
+        
+        <button class="btn btn-outline" onclick="go('overview')" aria-label="Semester Train" title="Semester Train" style="padding:10px 14px; border-radius:12px; font-size:16px;">🚄</button>
         <button class="btn btn-dark" onclick="go('dashboard')">Command Center</button>
     </div>
 </header>
@@ -1900,6 +1948,17 @@ input::placeholder { color: #9ba3b1; }
 
 <script>
 /* =========================================================
+   DETERMINISTIC RANDOM FOR FIXED SCENERY
+   ========================================================= */
+const PRNG = {
+    seed: 4242,
+    random: function() {
+        let x = Math.sin(this.seed++) * 10000;
+        return x - Math.floor(x);
+    }
+};
+
+/* =========================================================
    THEME AND STARTUP LOGIC
    ========================================================= */
 function initTheme() {
@@ -1907,18 +1966,17 @@ function initTheme() {
     if (savedTheme === 'dark') {
         document.body.setAttribute('data-theme', 'dark');
     } else if (!savedTheme) {
-        // Automatically determine dark/light based on time of day if unset
         const hour = new Date().getHours();
         if (hour >= 18 || hour < 6) {
             document.body.setAttribute('data-theme', 'dark');
         }
     }
     
-    // Update toggle icon
+    // Set initial handle icon
     const isDark = document.body.getAttribute('data-theme') === 'dark';
-    const icon = document.getElementById('themeToggle');
-    if (icon) {
-        icon.textContent = isDark ? '☀️' : '🌙';
+    const handle = document.querySelector('.switch-handle');
+    if (handle) {
+        handle.textContent = isDark ? '🌙' : '☀️';
     }
 }
 initTheme();
@@ -1929,9 +1987,9 @@ function toggleTheme() {
     body.setAttribute('data-theme', isDark ? 'light' : 'dark');
     localStorage.setItem('themeToggled', isDark ? 'light' : 'dark');
     
-    const icon = document.getElementById('themeToggle');
-    if (icon) {
-        icon.textContent = isDark ? '☀️' : '🌙';
+    const handle = document.querySelector('.switch-handle');
+    if (handle) {
+        handle.textContent = isDark ? '☀️' : '🌙';
     }
 }
 
@@ -1946,18 +2004,14 @@ document.addEventListener('mousemove', e => {
     domCursor.style.transform = `translate3d(calc(${e.clientX}px - 6px), calc(${e.clientY}px - 12px), 0)`;
 });
 
-document.addEventListener('mousedown', () => { 
-    domCursor.classList.add('spin'); 
-});
+document.addEventListener('mousedown', () => { domCursor.classList.add('spin'); });
 
 document.addEventListener('mouseup', () => { 
-    setTimeout(() => { 
-        domCursor.classList.remove('spin'); 
-    }, 500); 
+    setTimeout(() => { domCursor.classList.remove('spin'); }, 500); 
 });
 
 function initCursorHoverEffects() {
-    document.querySelectorAll('button, a, select, input[type="button"], input[type="submit"], input[type="checkbox"], .station, .dep-node, .nav-link, .landing-tools > div, .archive-card, .k-item, .time-option, .task-item, .close-button, .brand, .remove-task-btn').forEach(el => {
+    document.querySelectorAll('button, a, select, input[type="button"], input[type="submit"], input[type="checkbox"], .station, .dep-node, .nav-link, .landing-tools > div, .archive-card, .k-item, .time-option, .task-item, .close-button, .brand, .remove-task-btn, .theme-switch').forEach(el => {
         el.addEventListener('mouseenter', () => domCursorInner.setAttribute('stroke', '#f03232')); 
         el.addEventListener('mouseleave', () => domCursorInner.setAttribute('stroke', '#ff7a1a')); 
     });
@@ -1966,313 +2020,30 @@ function initCursorHoverEffects() {
 /* =========================================================
    DEMO DATA
    ========================================================= */
-// Restored exactly to the original un-condensed snippet list provided
 const defaultCourses = [
-    { 
-        id: "signals", 
-        code: "ECE 310", 
-        name: "Signals & Systems", 
-        instructor: "Dr. Rahman", 
-        grade: 48, 
-        deadline: "Tomorrow", 
-        deadlineDays: 1, 
-        status: "active", 
-        semester: "Fall 2026", 
-        topics: ["Fourier Transform", "Frequency Response", "Convolution"], 
-        missed: true, 
-        weeks: [] 
-    },
-    { 
-        id: "control", 
-        code: "ECE 322", 
-        name: "Control Systems", 
-        instructor: "Dr. Hassan", 
-        grade: 74, 
-        deadline: "3 days", 
-        deadlineDays: 3, 
-        status: "active", 
-        semester: "Fall 2026", 
-        topics: ["Block Diagrams", "Stability", "Frequency Response"], 
-        missed: true, 
-        weeks: [] 
-    },
-    { 
-        id: "programming", 
-        code: "CPE 220", 
-        name: "Programming II", 
-        instructor: "Dr. Malik", 
-        grade: 81, 
-        deadline: "Next Week", 
-        deadlineDays: 7, 
-        status: "active", 
-        semester: "Fall 2026", 
-        topics: ["Inheritance", "Polymorphism", "File Handling"], 
-        missed: false, 
-        weeks: [] 
-    },
-    { 
-        id: "dld", 
-        code: "CPE 230", 
-        name: "Digital Logic Design", 
-        instructor: "Dr. Omar", 
-        grade: 86, 
-        deadline: "Completed", 
-        deadlineDays: 999, 
-        status: "archived", 
-        semester: "Spring 2026", 
-        topics: ["Flip-Flops", "Finite State Machines", "Logic Gates", "Counters"], 
-        missed: false, 
-        weeks: [] 
-    },
-    { 
-        id: "random", 
-        code: "ECE 340", 
-        name: "Random Signal Theory", 
-        instructor: "Dr. Ahmed", 
-        grade: 79, 
-        deadline: "Completed", 
-        deadlineDays: 999, 
-        status: "archived", 
-        semester: "Spring 2026", 
-        topics: ["Probability", "Random Variables", "Sample Space", "Estimation"], 
-        missed: false, 
-        weeks: [] 
-    }
+    { id: "signals", code: "ECE 310", name: "Signals & Systems", instructor: "Dr. Rahman", grade: 48, deadline: "Tomorrow", deadlineDays: 1, status: "active", semester: "Fall 2026", topics: ["Fourier Transform", "Frequency Response", "Convolution"], missed: true, weeks: [] },
+    { id: "control", code: "ECE 322", name: "Control Systems", instructor: "Dr. Hassan", grade: 74, deadline: "3 days", deadlineDays: 3, status: "active", semester: "Fall 2026", topics: ["Block Diagrams", "Stability", "Frequency Response"], missed: true, weeks: [] },
+    { id: "programming", code: "CPE 220", name: "Programming II", instructor: "Dr. Malik", grade: 81, deadline: "Next Week", deadlineDays: 7, status: "active", semester: "Fall 2026", topics: ["Inheritance", "Polymorphism", "File Handling"], missed: false, weeks: [] },
+    { id: "dld", code: "CPE 230", name: "Digital Logic Design", instructor: "Dr. Omar", grade: 86, deadline: "Completed", deadlineDays: 999, status: "archived", semester: "Spring 2026", topics: ["Flip-Flops", "Finite State Machines", "Logic Gates", "Counters"], missed: false, weeks: [] },
+    { id: "random", code: "ECE 340", name: "Random Signal Theory", instructor: "Dr. Ahmed", grade: 79, deadline: "Completed", deadlineDays: 999, status: "archived", semester: "Spring 2026", topics: ["Probability", "Random Variables", "Sample Space", "Estimation"], missed: false, weeks: [] }
 ];
 
-// Helper to safely format courses retrieved from storage, guaranteeing array
 function ensureAssignments(courseList) {
-    courseList.forEach(c => {
-        if(!c.assignments) c.assignments = [];
-    });
+    courseList.forEach(c => { if(!c.assignments) c.assignments = []; });
     return courseList;
 }
 
 let saved = localStorage.getItem("backtrackCourses_v21");
 let courses = saved ? ensureAssignments(JSON.parse(saved)) : ensureAssignments(defaultCourses);
 
-let sceneryData = [];
-
-// =========================================================
-// SEMESTER TRAIN FOREST
-// Trees are ALWAYS below the railway.
-// No trees are allowed in the sky or above the track.
-// =========================================================
-
-function generateForest(mapWidth) {
-
-    const newScenery = [];
-
-    // Same curve as the railway.
-    const getTrackY = (x) => {
-        return 320 - 120 * Math.sin(x * Math.PI / 400);
-    };
-
-    // -----------------------------------------------------
-    // BACK / MIDGROUND FOREST
-    // Smaller trees, close to the railway but safely below it
-    // -----------------------------------------------------
-
-    for (let x = -40; x < mapWidth + 100; x += 65) {
-
-        const trackY = getTrackY(x);
-
-        // Tree artwork extends upward, so leave a generous
-        // safety gap below the railway.
-        const y = trackY + 105 + Math.random() * 55;
-
-        const isAutumn = Math.random() < 0.30;
-
-        newScenery.push({
-            x: x + (Math.random() * 45 - 22),
-            y: y,
-            type: isAutumn ? 'tree-autumn' : 'tree-pine',
-            scale: 0.45 + Math.random() * 0.18,
-            z: Math.floor(y)
-        });
-    }
-
-    // -----------------------------------------------------
-    // MAIN FOREST
-    // More trees, larger, spread across the landscape
-    // -----------------------------------------------------
-
-    for (let x = -20; x < mapWidth + 120; x += 75) {
-
-        const trackY = getTrackY(x);
-
-        const y = trackY + 175 + Math.random() * 100;
-
-        const isAutumn = Math.random() < 0.38;
-
-        newScenery.push({
-            x: x + (Math.random() * 70 - 35),
-            y: y,
-            type: isAutumn ? 'tree-autumn' : 'tree-pine',
-            scale: 0.60 + Math.random() * 0.25,
-            z: Math.floor(y)
-        });
-
-        // Occasionally add a second nearby tree.
-        if (Math.random() < 0.45) {
-
-            const secondY = y + 30 + Math.random() * 55;
-
-            newScenery.push({
-                x: x + 25 + (Math.random() * 45 - 22),
-                y: secondY,
-                type: Math.random() < 0.35
-                    ? 'tree-autumn'
-                    : 'tree-pine',
-                scale: 0.50 + Math.random() * 0.22,
-                z: Math.floor(secondY)
-            });
-        }
-    }
-
-    // -----------------------------------------------------
-    // FOREGROUND FOREST
-    // Larger trees concentrated toward the bottom
-    // -----------------------------------------------------
-
-    for (let x = -50; x < mapWidth + 150; x += 105) {
-
-        const trackY = getTrackY(x);
-
-        // Keep these firmly in the lower portion.
-        const minY = Math.max(trackY + 240, 450);
-
-        const y = minY + Math.random() * 150;
-
-        const isAutumn = Math.random() < 0.45;
-
-        newScenery.push({
-            x: x + (Math.random() * 90 - 45),
-            y: Math.min(y, 680),
-            type: isAutumn ? 'tree-autumn' : 'tree-pine',
-            scale: 0.78 + Math.random() * 0.32,
-            z: Math.floor(y)
-        });
-    }
-
-    // -----------------------------------------------------
-    // SMALL SHRUBS
-    // Fill some gaps without creating another forest wall
-    // -----------------------------------------------------
-
-    for (let x = 0; x < mapWidth + 100; x += 90) {
-
-        if (Math.random() > 0.55) continue;
-
-        const trackY = getTrackY(x);
-
-        const y = Math.max(
-            trackY + 230,
-            420
-        ) + Math.random() * 220;
-
-        newScenery.push({
-            x: x + (Math.random() * 70 - 35),
-            y: Math.min(y, 690),
-            type: Math.random() < 0.8
-                ? 'shrub'
-                : 'shrub-autumn',
-            scale: 0.55 + Math.random() * 0.30,
-            z: Math.floor(y + 5)
-        });
-    }
-
-    // Back-to-front rendering
-    return newScenery.sort((a, b) => a.y - b.y);
-}
-
-function generateTrees(mapWidth) {
-    const newScenery = [];
-
-    // Same curve as the railway.
-    const trackY = (x) => {
-        return 320 - 120 * Math.sin(x * Math.PI / 400);
-    };
-
-    // -----------------------------------------
-    // MIDGROUND TREES
-    // Main visual layer
-    // -----------------------------------------
-    for (let x = 20; x < mapWidth + 100; x += 125) {
-
-        const y = trackY(x) + 170 + Math.random() * 55;
-
-        newScenery.push({
-            x: x + (Math.random() * 65 - 32),
-            y: y,
-            type: Math.random() > 0.72
-                ? 'tree-autumn'
-                : 'tree-pine',
-            scale: 0.65 + Math.random() * 0.22,
-            z: Math.floor(y)
-        });
-    }
-
-    // -----------------------------------------
-    // FOREGROUND TREES
-    // Large but deliberately spaced
-    // -----------------------------------------
-    for (let x = 0; x < mapWidth + 100; x += 180) {
-
-        const y = trackY(x) + 285 + Math.random() * 60;
-
-        newScenery.push({
-            x: x + (Math.random() * 90 - 45),
-            y: y,
-            type: Math.random() > 0.68
-                ? 'tree-autumn'
-                : 'tree-pine',
-            scale: 0.82 + Math.random() * 0.28,
-            z: Math.floor(y)
-        });
-    }
-
-    // -----------------------------------------
-    // SMALL GROUPS OF SHRUBS
-    // Much less frequent than before
-    // -----------------------------------------
-    for (let x = 50; x < mapWidth + 100; x += 150) {
-
-        if (Math.random() > 0.55) continue;
-
-        const y = trackY(x) + 300 + Math.random() * 55;
-
-        newScenery.push({
-            x: x + (Math.random() * 80 - 40),
-            y: y,
-            type: Math.random() > 0.8
-                ? 'shrub-autumn'
-                : 'shrub',
-            scale: 0.55 + Math.random() * 0.25,
-            z: Math.floor(y + 5)
-        });
-    }
-
-    // Back-to-front rendering
-    return newScenery.sort((a, b) => a.y - b.y);
-}
-
 let selectedTime = 60;
 let selectedRecapCourse = null;
 let selectedMissedAmount = "multiple";
 let isPathBuilt = false;
 
-function saveCourses() { 
-    localStorage.setItem("backtrackCourses_v21", JSON.stringify(courses)); 
-}
-
-function go(route) { 
-    window.location.hash = route; 
-}
-
-function getRoute() { 
-    return window.location.hash.replace("#", "") || "home"; 
-}
+function saveCourses() { localStorage.setItem("backtrackCourses_v21", JSON.stringify(courses)); }
+function go(route) { window.location.hash = route; }
+function getRoute() { return window.location.hash.replace("#", "") || "home"; }
 
 window.addEventListener("hashchange", () => render(true));
 
@@ -2301,37 +2072,16 @@ function renderPage() {
     });
     
     const app = document.getElementById("app");
-    
     switch(route) {
-        case "home": 
-            app.innerHTML = homePage(); 
-            break;
-        case "problem": 
-            app.innerHTML = problemPage(); 
-            break;
-        case "recap": 
-            app.innerHTML = recapPage(); 
-            if (isPathBuilt) buildCatchup(true); 
-            break;
-        case "recover": 
-            app.innerHTML = recoverPage(); 
-            setTimeout(calculateRecovery, 50); 
-            break;
-        case "next": 
-            app.innerHTML = nextPage(); 
-            break;
-        case "archive": 
-            app.innerHTML = archivePage(); 
-            break;
-        case "dashboard": 
-            app.innerHTML = dashboardPage(); 
-            break;
-        case "overview": 
-            app.innerHTML = trainOverviewPage(); 
-            setTimeout(setupTrainMap, 50); 
-            break;
-        default: 
-            app.innerHTML = homePage();
+        case "home": app.innerHTML = homePage(); break;
+        case "problem": app.innerHTML = problemPage(); break;
+        case "recap": app.innerHTML = recapPage(); if (isPathBuilt) buildCatchup(true); break;
+        case "recover": app.innerHTML = recoverPage(); setTimeout(calculateRecovery, 50); break;
+        case "next": app.innerHTML = nextPage(); break;
+        case "archive": app.innerHTML = archivePage(); break;
+        case "dashboard": app.innerHTML = dashboardPage(); break;
+        case "overview": app.innerHTML = trainOverviewPage(); setTimeout(setupTrainMap, 50); break;
+        default: app.innerHTML = homePage();
     }
 }
 
@@ -2355,10 +2105,8 @@ function generateRoadmapPath(numNodes) {
         let prevY = (i - 1) * step;
         let curY = i * step;
         let midY = (prevY + curY) / 2;
-        
         let startX = onLeft ? 8 : 92;
         let endX = onLeft ? 92 : 8;
-        
         path += ` C ${startX} ${midY}, ${endX} ${prevY}, ${endX} ${curY}`;
         onLeft = !onLeft;
     }
@@ -2367,27 +2115,82 @@ function generateRoadmapPath(numNodes) {
 
 function homePage() {
     return `
-    <div class="page landing-page">
+    <div class="page landing-page" style="position: relative;">
+
         <section class="landing-hero animate-stagger">
-            <div class="landing-copy">
-                <h1>When you fall<br>behind, we'll help<br>you find your way<em>forward.</em></h1>
-                <p>Backtrack turns academic setbacks into a clear path forward. Stop worrying about the entire semester and focus on the next right move.</p>
-                <button class="btn btn-dark landing-button" onclick="go('dashboard')">ENTER COMMAND CENTER →</button>
+            
+            <!-- Side squiggly decorations mimicking the reference image -->
+            <div class="hero-decorations">
+                <svg width="120" height="500" viewBox="0 0 120 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path class="squiggly" d="M 50 0 Q 110 30 50 60 T 50 120 T 50 180 T 50 240 T 50 300 T 50 360 T 50 420 T 50 480" stroke="#152d2c" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <rect x="10" y="80" width="24" height="24" fill="url(#gradShape1)" transform="rotate(25 22 92)"/>
+                    <circle cx="50" cy="220" r="18" fill="url(#gradShape2)" />
+                    <polygon points="10,340 30,310 30,370" fill="#f03232" />
+                    <rect x="25" y="420" width="20" height="20" fill="#102a29" transform="rotate(45 35 430)"/>
+                    <defs>
+                        <linearGradient id="gradShape1" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#ff7a1a"/>
+                            <stop offset="100%" stop-color="#f03232"/>
+                        </linearGradient>
+                        <linearGradient id="gradShape2" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#ff7a1a"/>
+                            <stop offset="100%" stop-color="#f03232"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
             </div>
+
+            <!-- Layer 1: Authentic Grid Paper Base -->
+            <div class="grid-paper-shadow">
+                <div class="grid-paper-fray"></div>
+                <div class="grid-paper-base"></div>
+                <div class="grid-paper-lines"></div>
+            </div>
+
+            <!-- Layer 2: Torn White Paper Overlay -->
+            <div class="landing-copy">
+                <div class="white-paper-shadow">
+                    <div class="white-paper-inner">
+                        <h1>
+                            When you fall<br>
+                            <span style="position:relative;"><span class="mark">«</span>behind,</span> we'll help<br>
+                            you find your way<br>
+                            <span class="em-word">forward.</span>
+                        </h1>
+                        <p>Backtrack turns academic setbacks into a clear path forward.<br>Stop worrying about the entire semester and focus on the next<br>right move.</p>
+                        <button class="btn btn-dark landing-button" onclick="go('dashboard')">ENTER COMMAND CENTER →</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Graphic layout completely extending out into right-hand negative space -->
             <div class="landing-visual delay-1">
-                <svg class="hero-arrows" viewBox="0 -10 60 40" aria-hidden="true" style="width: 450px;">
+                <!-- Large grid pattern overlay outside the paper -->
+                <div class="visual-dots"></div>
+                
+                <!-- Ghost triangles behind the arrows -->
+                <div class="ghost-triangle triangle-1"></div>
+                <div class="ghost-triangle triangle-2"></div>
+                
+                <!-- Giant blurred floating circle -->
+                <div class="shape-circle"></div>
+                
+                <svg class="hero-arrows" viewBox="0 -10 60 40" aria-hidden="true">
                     <defs>
                         <linearGradient id="heroArrowGradient" x1="0" y1="0" x2="1" y2="0">
                             <stop offset="0%" stop-color="#ff7a1a"/>
                             <stop offset="100%" stop-color="#f03232"/>
                         </linearGradient>
                     </defs>
-                    <path d="M28 2 L12 10 L28 18 M52 2 L36 10 L52 18" fill="none" stroke="url(#heroArrowGradient)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M28 2 L12 10 L28 18 M52 2 L36 10 L52 18" fill="none" stroke="url(#heroArrowGradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <div class="abstract-shape shape-one"></div>
-                <div class="abstract-shape shape-two"></div>
+                
+                <!-- Abstract geometric blocks around arrows -->
+                <div class="floating-accent accent-box"></div>
+                <div class="floating-accent accent-cross"></div>
             </div>
         </section>
+        
         <section class="landing-tools animate-stagger delay-2">
             <div onclick="go('recap')">
                 <div class="tool-icon">↶</div>
@@ -2410,6 +2213,7 @@ function homePage() {
                 <span>What should I keep?</span>
             </div>
         </section>
+        
         <section class="landing-bottom">
             <div>
                 <h2>A clearer path<br>when you need it most.</h2>
@@ -2424,7 +2228,6 @@ function homePage() {
 function dashboardPage() {
     const active = courses.filter(c => c.status === "active");
     
-    // Sort logic that handles both assignments and the courses natively 
     let actionItems = [];
     active.forEach(c => {
         if (c.assignments && c.assignments.length > 0) {
@@ -2440,7 +2243,6 @@ function dashboardPage() {
     
     actionItems.sort((a,b) => b.score - a.score);
     
-    // De-duplicate so the roadmap accurately shows active courses without overwhelming length
     let sortedCourses = [];
     let usedCourseIds = new Set();
     for(let item of actionItems) {
@@ -2487,7 +2289,6 @@ function dashboardPage() {
         <div class="dashboard-layout animate-stagger delay-1">
             <div class="dashboard-main">
                 <div class="roadmap-container">
-                    <!-- Restored dynamically drawn dotted SVG line linking all components -->
                     <svg class="roadmap-bg" viewBox="0 0 100 100" preserveAspectRatio="none">
                         <defs>
                             <linearGradient id="roadmapGradient" x1="0" y1="0" x2="0" y2="1">
@@ -2532,7 +2333,7 @@ function dashboardPage() {
                     ` : emptyCourses()}
 
                     ${others.map((item, index) => {
-                        const isRight = index % 2 === 0; // index 0 is others[0], which is course #2. Right side.
+                        const isRight = index % 2 === 0; 
                         return `
                         <div class="rm-node ${isRight ? 'rm-right' : ''} animate-stagger" style="animation-delay: 0.${2+index}s">
                             <div class="rm-marker">${index + 2}</div>
@@ -2612,46 +2413,25 @@ function dashboardPage() {
 }
 
 function getTrackPathStr(width) {
-    let p = `M -100 320 C 100 200, 300 200, 400 320`;
+    let p = `M -100 480 C 100 360, 300 360, 400 480`;
     let x = 400;
     let up = false;
     while (x < width + 400) {
         let endx = x + 400;
-        let cpy = up ? 200 : 440;
-        p += ` S ${x + 200} ${cpy}, ${endx} 320`;
+        let cpy = up ? 360 : 600;
+        p += ` S ${x + 200} ${cpy}, ${endx} 480`;
         x = endx;
         up = !up;
     }
     return p;
 }
 
-function renderTrees() {
-    const container = document.getElementById('treeContainer');
-    if (!container) return;
-    
-    let html = "";
-    // Sort array by Y to ensure proper DOM stacking
-    sceneryData.sort((a,b) => a.y - b.y).forEach((t) => {
-        html += `
-            <div class="scenery-cluster" style="left: ${t.x}px; top: ${t.y}px; z-index: ${t.z};">
-                <svg width="100" height="100" style="overflow:visible;">
-                    <use href="#${t.type}" x="0" y="0" transform="scale(${t.scale})"/>
-                </svg>
-            </div>
-        `;
-    });
-    container.innerHTML = html;
-}
-
 function trainOverviewPage() {
     const active = courses.filter(c => c.status === "active");
-    
     const startOffset = 250;
     const spacing = 380;
     const mapWidth = Math.max(1000, startOffset + (active.length * spacing) + 300);
     const pathStr = getTrackPathStr(mapWidth);
-    
-    // Add solid ground path that masks the skyline
     const groundPathStr = pathStr + ` L ${mapWidth + 400} 700 L -100 700 Z`;
 
     return `
@@ -2680,9 +2460,8 @@ function trainOverviewPage() {
                     </div>
 
                     <svg class="winding-track-svg" width="100%" height="100%" viewBox="0 0 ${mapWidth} 700" preserveAspectRatio="none">
-                        <!-- Dynamic Skyline injected perfectly behind the ground layer -->
+                        <g id="cloudGroup"></g>
                         <g id="skylineGroup"></g>
-                        <!-- Solid ground below track -->
                         <path id="groundLayer" d="${groundPathStr}" fill="var(--surface-2)" />
                         
                         <path d="${pathStr}" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="36" stroke-linecap="round" transform="translate(0, 4)" />
@@ -2691,7 +2470,6 @@ function trainOverviewPage() {
                         <path id="mainTrackPath" d="${pathStr}" fill="none" stroke="#9ba3b1" stroke-width="20" mask="url(#trackMask)" stroke-linecap="round" />
                     </svg>
                     
-                    <div id="treeContainer"></div>
                     <div id="stationsContainer"></div>
 
                     ${active.length === 0 ? `<div style="position:absolute; bottom:120px; left:60px; color:var(--muted); font-size:18px; font-weight:800; z-index:20;">Add active courses to build your map.</div>` : ''}
@@ -2734,6 +2512,7 @@ function setupTrainMap() {
     const middle = document.getElementById("activeMiddle");
     const carriage = document.getElementById("activeCarriage");
     const skylineGroup = document.getElementById("skylineGroup");
+    const cloudGroup = document.getElementById("cloudGroup");
     
     if (!path || !container || !loco || !middle || !carriage) return;
 
@@ -2742,63 +2521,59 @@ function setupTrainMap() {
     const spacing = 380;
     const mapWidth = Math.max(1000, startOffset + (activeCourses.length * spacing) + 300);
 
-    // Call procedural tree gen ensuring huge density strictly below the track curve
-    sceneryData = [...generateForest(mapWidth), ...generateTrees(mapWidth)];
-    renderTrees();
+    PRNG.seed = 4242;
 
-// =========================================================
-// CITY SKYLINE
-// Distant buildings behind the railway
-// =========================================================
+    if (cloudGroup) {
+        let cloudHtml = "";
+        for (let cx = -100; cx < mapWidth + 200; cx += 150 + PRNG.random() * 200) {
+            const cy = 50 + PRNG.random() * 180;
+            const scale = 0.5 + PRNG.random() * 0.8;
+            const opacity = 0.3 + PRNG.random() * 0.4;
+            cloudHtml += `
+                <g transform="translate(${cx}, ${cy}) scale(${scale})" opacity="${opacity}">
+                    <use href="#cloud-shape" class="scenery-cloud" />
+                </g>
+            `;
+        }
+        cloudGroup.innerHTML = cloudHtml;
+    }
 
-if (skylineGroup) {
-
-    let skylineHtml = "";
-
-    for (let tx = -80; tx < mapWidth + 150; tx += 55 + Math.random() * 55) {
-
-        const trackY =
-            320 - 120 * Math.sin(tx * Math.PI / 400);
-
-        // Vary building height for a natural skyline.
-        const buildingWidth = 22 + Math.random() * 32;
-        const buildingHeight = 75 + Math.random() * 150;
-
-        const top =
-            trackY - buildingHeight + 10;
-
-        skylineHtml += `
-            <rect
-                x="${tx}"
-                y="${top}"
-                width="${buildingWidth}"
-                height="${buildingHeight}"
-                rx="2"
-                class="skyline-tower"
-            />
-        `;
-
-        // Occasionally create a smaller building beside it.
-        if (Math.random() < 0.45) {
-
-            const smallWidth = 15 + Math.random() * 22;
-            const smallHeight = 45 + Math.random() * 90;
+    if (skylineGroup) {
+        let skylineHtml = "";
+        for (let tx = -80; tx < mapWidth + 150; tx += 20 + PRNG.random() * 30) {
+            const trackY = 480 - 120 * Math.sin(tx * Math.PI / 400);
+            const buildingWidth = 25 + PRNG.random() * 40;
+            const buildingHeight = 150 + PRNG.random() * 250;
+            const top = trackY - buildingHeight + 20;
 
             skylineHtml += `
                 <rect
-                    x="${tx + buildingWidth + 5}"
-                    y="${trackY - smallHeight + 10}"
-                    width="${smallWidth}"
-                    height="${smallHeight}"
+                    x="${tx}"
+                    y="${top}"
+                    width="${buildingWidth}"
+                    height="${buildingHeight}"
                     rx="2"
                     class="skyline-tower"
                 />
             `;
-        }
-    }
 
-    skylineGroup.innerHTML = skylineHtml;
-}
+            if (PRNG.random() < 0.45) {
+                const smallWidth = 15 + PRNG.random() * 25;
+                const smallHeight = 60 + PRNG.random() * 120;
+                skylineHtml += `
+                    <rect
+                        x="${tx + buildingWidth + 5}"
+                        y="${trackY - smallHeight + 20}"
+                        width="${smallWidth}"
+                        height="${smallHeight}"
+                        rx="2"
+                        class="skyline-tower"
+                    />
+                `;
+            }
+        }
+        skylineGroup.innerHTML = skylineHtml;
+    }
 
     if (maskPath) {
         maskPath.setAttribute("d", path.getAttribute("d"));
@@ -2819,7 +2594,6 @@ if (skylineGroup) {
     if (activeCourses.length === 0) return;
 
     const totalLen = path.getTotalLength();
-    
     let stationsHtml = "";
     
     activeCourses.forEach((c, index) => {
@@ -2827,7 +2601,6 @@ if (skylineGroup) {
         if (dist > totalLen) return; 
         
         const pt = path.getPointAtLength(dist);
-        
         stationsHtml += `
             <div class="station" style="left: ${pt.x}px; top: ${pt.y}px;" onclick="driveTrainTo(${dist}, '${c.id}')">
                 <div class="kiosk-roof">${c.code}</div>
@@ -3199,9 +2972,7 @@ function recapPage() {
     `;
 }
 
-function changeMissedAmount(val) { 
-    selectedMissedAmount = val; 
-}
+function changeMissedAmount(val) { selectedMissedAmount = val; }
 
 function changeRecapCourse(id) { 
     selectedRecapCourse = id; 
