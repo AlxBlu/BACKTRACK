@@ -364,6 +364,7 @@ h1 {
 .grid-paper-shadow {
     position: absolute;
     top: -15px; bottom: -15px; left: 70px; width: 62%;
+    /* Let the drop shadow follow the SVG filtered torn edges exactly */
     filter: drop-shadow(8px 12px 25px rgba(0,0,0,0.15));
     z-index: 1;
 }
@@ -378,12 +379,15 @@ h1 {
 .grid-paper-fray::before {
     content: "";
     position: absolute; inset: 0;
-    /* Translucent edge simulating thin ripped paper */
+    /* More realistic translucent paper fibers */
     background: rgba(253, 253, 248, 0.95); 
     /* Slanted & chaotic clip path / */
     clip-path: polygon( 0 0, 100% 0%, 96% 6%, 99% 12%, 91% 22%, 95% 28%, 86% 40%, 89% 48%, 79% 60%, 83% 68%, 73% 82%, 76% 88%, 66% 100%, 0 100% );
     /* Apply SVG filter to turn polygons into realistic torn fibers */
     filter: url(#paper-edge-rough);
+}
+[data-theme="dark"] .grid-paper-fray::before {
+    background: rgba(35, 35, 35, 0.95);
 }
 
 /* 2. Inner Grid Paper Base (Filtered, fibrous edge, no grid lines here) */
@@ -404,8 +408,8 @@ h1 {
 .grid-paper-lines {
     position: absolute; inset: 0; z-index: 3;
     background-image: 
-        linear-gradient(rgba(50, 20, 10, 0.4) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(50, 20, 10, 0.4) 1px, transparent 1px);
+        linear-gradient(rgba(50, 20, 10, 0.45) 1.5px, transparent 1.5px),
+        linear-gradient(90deg, rgba(50, 20, 10, 0.45) 1.5px, transparent 1.5px);
     background-size: 42px 42px;
     /* Exactly matching the base clip path, but avoiding the filter */
     clip-path: polygon( 0 0, 98% 0%, 94% 6%, 97% 12%, 89% 22%, 93% 28%, 84% 40%, 87% 48%, 77% 60%, 81% 68%, 71% 82%, 74% 88%, 64% 100%, 0 100% );
@@ -417,8 +421,8 @@ h1 {
 }
 [data-theme="dark"] .grid-paper-lines {
     background-image: 
-        linear-gradient(rgba(0,0,0,0.8) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.8) 1px, transparent 1px);
+        linear-gradient(rgba(0,0,0,0.5) 1.5px, transparent 1.5px),
+        linear-gradient(90deg, rgba(0,0,0,0.5) 1.5px, transparent 1.5px);
 }
 
 .landing-copy {
@@ -430,7 +434,7 @@ h1 {
 /* 4. Top White Paper Drop Shadow Wrapper */
 .white-paper-shadow {
     position: relative;
-    filter: drop-shadow(4px 15px 30px rgba(0,0,0,0.3)); 
+    filter: drop-shadow(4px 15px 30px rgba(0,0,0,0.3)); /* Deep, soft shadow */
     margin-left: 20px; margin-top: 20px; margin-bottom: 20px;
     max-width: 600px;
 }
@@ -438,7 +442,7 @@ h1 {
 
 /* 5. The physical white torn paper block (Slanted Rip) */
 .white-paper-inner {
-    position: relative; 
+    position: relative; /* Container stays straight so text is clean */
     padding: 50px 60px 50px 40px;
     z-index: 5;
 }
@@ -450,7 +454,7 @@ h1 {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-size: 200px 200px;
     background-blend-mode: multiply;
-    box-shadow: inset -10px 0 35px rgba(0,0,0,0.06); /* Shadow curling near the tear */
+    box-shadow: inset -5px 0 25px rgba(0,0,0,0.04);
     
     /* Slanted & chaotic paths / for right edge. Mildly wavy on other borders. */
     clip-path: polygon(
@@ -461,7 +465,7 @@ h1 {
     filter: url(#paper-edge);
     z-index: -1;
 }
-[data-theme="dark"] .white-paper-inner::before { background-color: #1a1a1a; background-blend-mode: overlay; }
+[data-theme="dark"] .white-paper-inner::before { background-color: #1e1e1e; background-blend-mode: overlay; }
 
 /* Text formatting matching the image closely */
 .landing-copy h1 {
@@ -1884,12 +1888,14 @@ input::placeholder { color: #9ba3b1; }
         <!-- TORN PAPER DISPLACEMENT FILTERS -->
         <!-- Standard Edge: Soft fibrous tear -->
         <filter id="paper-edge" x="-10%" y="-10%" width="120%" height="120%">
+            <!-- Anisotropic noise (different x/y) creates highly realistic directional paper fibers -->
             <feTurbulence type="fractalNoise" baseFrequency="0.04 0.08" numOctaves="4" result="noise" />
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
         </filter>
         
         <!-- Rough Edge: Deep fibrous tear for underlying layers -->
         <filter id="paper-edge-rough" x="-20%" y="-20%" width="140%" height="140%">
+            <!-- Anisotropic noise creates heavier directional tears -->
             <feTurbulence type="fractalNoise" baseFrequency="0.03 0.06" numOctaves="5" result="noise" />
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G" />
         </filter>
